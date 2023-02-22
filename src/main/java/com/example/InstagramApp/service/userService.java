@@ -20,13 +20,15 @@ public class userService {
 
     public JSONArray getUser(String id){
          JSONArray userArray=new JSONArray();
-         if(userrepository.findById(Integer.valueOf(id)).isPresent() && id!=null){
-             User user=userrepository.findById(Integer.valueOf(id)).get();
+        if( id!=null){
+            User user=userrepository.findById(Integer.valueOf(id)).get();
+           if(user!=null){
+               JSONObject userObj=setUser(user);
+               userArray.put(userObj);
+           }
 
-                 JSONObject userObj=setUser(user);
-                 userArray.put(userObj);
-             
-         }else{
+
+        }else{
              List<User> userList=userrepository.findAll();
              for(User user:userList){
                  JSONObject userobject=setUser(user);
@@ -46,5 +48,16 @@ public class userService {
         jsonObject.put("phoneNumber",user.getPhoneNumber());
 
         return jsonObject;
+    }
+    public void updateUser(String id,User newuser){
+        if(userrepository.findById(Integer.valueOf(id)).isPresent()){
+            User user=userrepository.findById(Integer.valueOf(id)).get();
+            user.setUserName(newuser.getUserName());
+            user.setPhoneNumber(newuser.getPhoneNumber());
+            user.setEmail(newuser.getEmail());
+            user.setAge(newuser.getAge());
+            user.setLastName(newuser.getLastName());
+            userrepository.save(user);
+        }
     }
 }

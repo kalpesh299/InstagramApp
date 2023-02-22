@@ -32,10 +32,19 @@ public class userController {
 
         return user;
     };
-    @GetMapping("getuser")
+
+    @GetMapping("/getuser")
     public ResponseEntity <String>getUser(@Nullable @RequestParam String userid){
             JSONArray userdetails=userservice.getUser(userid);
             return new ResponseEntity(userdetails.toString(),HttpStatus.OK);
+    }
+
+    @PutMapping("/user/{userid}")
+    public ResponseEntity<String>updateUser(@PathVariable String userid,@RequestBody String user){
+        JSONObject jsonuser=new JSONObject(user);
+        User updateduser=setUser(jsonuser);
+        userservice.updateUser(userid,updateduser);
+        return new ResponseEntity("dataupdated",HttpStatus.CREATED);
     }
 
 }
