@@ -3,8 +3,7 @@ package com.example.InstagramApp.controller;
 import com.example.InstagramApp.dao.userRepository;
 import com.example.InstagramApp.model.Post;
 import com.example.InstagramApp.model.User;
-import com.example.InstagramApp.service.ControllerService;
-import com.example.InstagramApp.service.userService;
+import com.example.InstagramApp.service.postService;
 import jakarta.annotation.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import java.sql.Timestamp;
 @RestController
 public class PostController {
     @Autowired
-    ControllerService controllerService;
+    postService postService;
 
     @Autowired
     userRepository userrepository;
@@ -27,7 +26,7 @@ public class PostController {
     public ResponseEntity<String>addPost(@RequestBody String post){
 
         Post userpost=setPost(post);
-       int postid= controllerService.savePost(userpost);
+       int postid= postService.savePost(userpost);
       return new ResponseEntity<>("Post added with id "+postid, HttpStatus.CREATED);
     }
 
@@ -55,8 +54,8 @@ public class PostController {
 
     @GetMapping("getpost")
     public ResponseEntity<String>getPost(@RequestParam String userId,@Nullable @RequestParam String postId){
-        JSONArray posyArr=controllerService.getPost(Integer.valueOf(userId),postId);
-        return new ResponseEntity<>("pot as been fetched",HttpStatus.FOUND);
+        JSONArray postArr= postService.getPost(Integer.valueOf(userId),postId);
+        return new ResponseEntity<>(postArr.toString(),HttpStatus.OK);
     }
 
 }
