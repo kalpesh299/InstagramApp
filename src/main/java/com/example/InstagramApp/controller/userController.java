@@ -20,7 +20,7 @@ public class userController {
         JSONObject json=new JSONObject(userbody);
         User user=setUser(json);
         int userid=userservice.saveUser(user);
-        return new ResponseEntity("user saved with id "+userid, HttpStatus.CREATED);
+        return new ResponseEntity("user saved with id "+ userid, HttpStatus.CREATED);
     }
     public User setUser(JSONObject json){
         User user=new User();
@@ -45,6 +45,13 @@ public class userController {
         User updateduser=setUser(jsonuser);
         userservice.updateUser(userid,updateduser);
         return new ResponseEntity("dataupdated",HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("deleteuser")
+    public ResponseEntity<String>deleteUser(@RequestParam String id){
+        Integer userid=Integer.valueOf(id);
+        userservice.deleteUser(userid);
+        return new ResponseEntity<>("User deleted with ID "+id,HttpStatus.OK );
     }
 
 }

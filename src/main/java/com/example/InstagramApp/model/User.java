@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @Column(name="user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)//to auto increment primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//to auto increment primary key
     private int userId;
     @Column(name="user_name")
     private String userName;

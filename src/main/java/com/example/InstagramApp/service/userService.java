@@ -50,14 +50,26 @@ public class userService {
         return jsonObject;
     }
     public void updateUser(String id,User newuser){
+//        if(userrepository.findById(Integer.valueOf(id)).isPresent()){
+//            User user=userrepository.findById(Integer.valueOf(id)).get();
+//            user.setUserName(newuser.getUserName());
+//            user.setPhoneNumber(newuser.getPhoneNumber());
+//            user.setEmail(newuser.getEmail());
+//            user.setAge(newuser.getAge());
+//            user.setLastName(newuser.getLastName());
+//            userrepository.save(user);
+//        }
+
         if(userrepository.findById(Integer.valueOf(id)).isPresent()){
             User user=userrepository.findById(Integer.valueOf(id)).get();
-            user.setUserName(newuser.getUserName());
-            user.setPhoneNumber(newuser.getPhoneNumber());
-            user.setEmail(newuser.getEmail());
-            user.setAge(newuser.getAge());
-            user.setLastName(newuser.getLastName());
             userrepository.save(user);
+        }
+
+    }
+
+    public void deleteUser(Integer id){
+        if(userrepository.findById(id).isPresent()){
+            userrepository.deleteById(id);
         }
     }
 }
