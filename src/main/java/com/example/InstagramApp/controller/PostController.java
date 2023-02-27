@@ -58,4 +58,13 @@ public class PostController {
         return new ResponseEntity<>(postArr.toString(),HttpStatus.OK);
     }
 
+    @PutMapping("updateuser/{id}")
+    public ResponseEntity<String>updatePost(@PathVariable String id,@RequestBody String post){
+
+        Post newpost=setPost(post);
+        postService.updatePost(id,newpost);
+        return new ResponseEntity<>("update done with pot id",HttpStatus.OK);
+
+    }
+
 }

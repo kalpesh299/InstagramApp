@@ -63,7 +63,7 @@ public class userService {
         if(userrepository.findById(Integer.valueOf(id)).isPresent()){
             User user=userrepository.findById(Integer.valueOf(id)).get();
             userrepository.save(user);
-        }
+        }   
 
     }
 

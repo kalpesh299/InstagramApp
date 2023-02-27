@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class postService {
         return newpost.getPostId();
     }
 
-    @GetMapping("getpost")
+
     public JSONArray getPost(Integer userId, String postId){
           JSONArray postarr=new JSONArray();
 
@@ -30,16 +31,35 @@ public class postService {
             Post post=postrepository.findById(Integer.valueOf(postId)).get();
             JSONObject jsonObject=setObject(post);
             postarr.put(jsonObject);
-          }else{
+          } else{
               List<Post>postList=postrepository.findAll();
               for(Post post:postList){
-                  JSONObject jsonobj=setObject(post);
-                  postarr.put(jsonobj);
+                 if(post.getUser().getUserId()==userId && post.getPostId()==Integer.valueOf(postId)) {
+                     JSONObject jsonobj=setObject(post);
+                     postarr.put(jsonobj);
+                 }else{
+                     JSONObject jsonobj=setObject(post);
+                     postarr.put(jsonobj);
+                 }
+
               }
 
           }
+          return postarr;
+    }
 
-return postarr;
+    public void updatePost(String id,Post updatedpost){
+
+        if(postrepository.findById(Integer.valueOf(id)).isPresent()){
+            Post olderpost=postrepository.findById(Integer.valueOf(id)).get();
+            updatedpost.setPostId(olderpost.getPostId());
+            updatedpost.setUser(olderpost.getUser());
+            updatedpost.setCreatedDate(olderpost.getCreatedDate());
+            Timestamp updatedDate=new Timestamp(System.currentTimeMillis());
+            updatedpost.setUpdateDate(updatedDate);
+            postrepository.save(updatedpost);
+        }
+
     }
 
     public JSONObject setObject(Post post){
